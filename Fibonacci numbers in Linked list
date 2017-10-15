@@ -1,4 +1,4 @@
-/*Program to store 7 fibonacci numbers in single linked list*/
+/* C Program to store 7 fibonacci numbers in single linked list*/
 #include  <stdio.h>
 #include <string.h>
 
