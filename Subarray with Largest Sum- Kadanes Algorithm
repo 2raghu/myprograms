@@ -13,14 +13,14 @@ int find_sum(int *a,int size)
     for(index = 0;index<size;index++)
     {
         max_prev= max_prev+a[index];
-      if(max_now < max_prev) {
-            max_now = max_prev;
-            start = s;end= index;
-      }
-      if(max_prev < 0) {
-            max_prev= 0;
-            s = index+1;
-    }
+        if(max_now < max_prev) {
+           max_now = max_prev;
+           start = s;end= index;
+        }
+        if(max_prev < 0) {
+           max_prev= 0;
+           s = index+1;
+        }
     }
     printf("Start Index= %d End Index = %d\n",start,end);
     return max_now;
