@@ -1,0 +1,121 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+int get_closeval(int sum,int diff,int *closer,int *near)
+{
+    if(diff < *closer)
+    {
+        *closer = diff;
+        *near = sum;
+        return 1;
+    }
+    return 0;
+}
+/*Find maximum subarray whose value=max. Also the closest max value.*/
+int find_max_arr(int a[],int size,int max)
+{
+    int *f,*b,sum=0,index1,index2;
+    f = b = a;
+    int near=0,closer;
+
+    //printf("f= %p\n",f);
+    if(max<=0) {
+        printf("Incorrect MAX input...\n");
+        return 0;
+    }
+    while(sum!=max && size>=0 && (f<=b))
+    {
+        //printf("Sum== %d size = %d\n",sum,size);
+        if(f == b)
+        {
+            sum = *f;
+            //printf("Init Sum = %d\n",sum);
+            closer = sum;
+            //get_closeval(sum,max,&closer,&near);
+            b++;
+            size--;
+            continue;
+        }
+        //sum += *b;
+        if(sum > max)
+        {
+            sum = sum - *f;
+            f++;
+            //printf("sum>max sum=%d, f= %p\n",sum,f);
+            //size--;
+            continue;
+        }
+        if(sum < max)
+        {
+            if(get_closeval(sum,max-sum,&closer,&near)) {
+                    index1= (f-a);
+                    index2 = (b-a)-1;
+            }
+
+            if(size)
+            {
+               sum += *b;
+               b++;
+            }
+            size--;
+            //printf("sum<max sum=%d, b= %p\n",sum,b);
+            continue;
+        }
+
+    }
+    if(sum==max)
+       printf("SUM %d FOUND @Index from %d to %d, Closest = %d\n",sum,(f-a),(b-a)-1,near);
+    else
+       printf("SUM %d not found.But closest is %d @ %d - %d\n",max,near,index1,index2);
+
+    return 0;
+
+}
+int max(int x,int y)
+{
+    return (x>y)?x:y;
+}
+/*Finds maximum of a k subarray. Sliding window alogirthm*/
+int maxSum(int arr[], int n, int k)
+{
+    // k must be greater
+    if (n < k)
+    {
+       printf("invalid");
+       return -1;
+    }
+
+    // Compute sum of first window of size k
+    int i,max_sum = 0;
+    for ( i=0; i<k; i++)
+       max_sum += arr[i];
+
+    // Compute sums of remaining windows by
+    // removing first element of previous
+    // window and adding last element of
+    // current window.
+    int window_sum = max_sum;
+    printf("max_sum= %d\n",max_sum);
+    for (i=k; i<n; i++)
+    {
+       window_sum += arr[i] - arr[i-k];
+       printf("win_sum= %d\n",window_sum);
+       max_sum = max(max_sum, window_sum);
+       printf("max_sum= %d\n",max_sum);
+    }
+
+    return max_sum;
+}
+
+int main(void)
+{
+    int a[] = {7,3,5,6};//{2,1,3,4,5};//{1, 4, 0, 0, 3, 10, 5};//{1, 4, 20, 3, 10, 5};////{7,3,5,6};
+    find_max_arr(a,sizeof a/sizeof *a,9);
+
+    int arr[] = {100,200,300,400};//{1, 4, 2, 10, 2, 3, 1, 0, 20};
+    int k = 2;
+    int n = sizeof(arr)/sizeof(arr[0]);
+    printf("SUMMAX= %d\n",maxSum(arr, n, k));
+    return 0;
+}
